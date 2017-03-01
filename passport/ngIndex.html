@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="myApp">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>通行证信息列表</title>
+<link rel="stylesheet" type="text/css" href="../static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="../lib/Hui-iconfont/1.0.7/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="../lib/icheck/icheck.css" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="../static/h-ui.admin/css/style.css" />
+</head>
+<body ng-controller="MyCtrl">
+	<div class="page-container dataTables_wrapper">
+		
+		<div class="text-c"> 
+			<input type="text" name="" id="hphm" placeholder="号牌号码" style="width:80px" class="input-text" ng-model="condition.hphm">
+			<button name="query" id="query" ng-click="query();" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>查询</button>
+		</div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+			<span class="l">
+				<!-- <a class="btn btn-primary radius" ng-click="addJjz()" href="javascript:;">
+					<i class="Hui-iconfont"></i> 添加进京证</a> -->
+				<a class="btn btn-primary radius" ng-click="addJjz2()" href="javascript:;">
+					<i class="Hui-iconfont"></i> 添加进京证</a>
+			</span> 
+			
+		</div>
+		
+		<div mytable></div>
+	</div>
+	
+	<!--[if IE 8]>
+        <script src="../lib/angularJS/es5-shim.min.js"></script>
+        <style>
+            .ng-hide {
+                display: none !important;
+            }
+        </style>
+    <![endif]-->
+	
+	<script type="text/javascript" src="../lib/jquery/1.9.1/jquery.min.js"></script> 
+	<script type="text/javascript" src="../lib/My97DatePicker/WdatePicker.js"></script> 
+	<script type="text/javascript" src="../lib/angularJS/angular-ie8.min.js"></script> 
+	<script type="text/javascript" src="../lib/layer/2.1/layer.js"></script> 
+	<script type="text/javascript" src="../static/h-ui/js/H-ui.js"></script> 
+	<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
+	<script type="text/javascript" src="../static/my-ng.js"></script> 
+	<script type="text/javascript">
+		var app = MyNg.createTable({
+			title:"进京证信息列表",
+			columns:[{text:"号牌号码",dataIndex:"hphm"},
+			         {text:"进京日期",dataIndex:"jjrq",format:"formatTime"},
+			         {text:"进京时长",dataIndex:"jjsc"},
+			         {text:"进京区县",dataIndex:"jjqxStr"},
+			         {text:"进京道路",dataIndex:"jjdlStr"},
+			         {text:"状态",dataIndex:"zt",format:"formatZt"},
+			         {text:"操作",xtype:"actioncolumn",actionBtns:'<a ng-hide="obj.zt!=1" ng-click="examine(obj,2)">审核通过</a>'+
+							'<a ng-hide="obj.zt!=1" ng-click="examine(obj,3)">审核不通过</a>'+
+							'<a ng-click="queryDetail(obj.jjId)">查看详情</a>'}
+		         ]
+		});
+		app.controller('MyCtrl', function($scope,$http) {
+			$scope.condition = {};
+			$scope.pageNum = 1;
+
+			$scope.query = function(){
+				var result = "{\"page\":{\"limit\":20,\"page\":1,\"totalCount\":4,\"offset\":0,\"nextPage\":1,\"totalPages\":1,\"firstPage\":true,\"lastPage\":true,\"prePage\":1,\"hasPrePage\":false,\"hasNextPage\":false,\"startRow\":1,\"endRow\":4,\"slider\":[1]},\"list\":[{\"jjId\":29,\"jjrq\":1487779200000,\"jjsc\":6,\"jjqx\":null,\"jjdl\":null,\"jjqxStr\":\"房山\",\"jjdlStr\":\"房易路\",\"zt\":2,\"vid\":null,\"hphm\":\"苏BU139R\",\"hplx\":\"02\",\"drivers\":null,\"jsyxm\":null,\"jszh\":null,\"xszPic\":null,\"clPic\":null,\"jszPic\":null,\"sfzPic\":null},{\"jjId\":28,\"jjrq\":1486483200000,\"jjsc\":3,\"jjqx\":null,\"jjdl\":null,\"jjqxStr\":\"昌平\",\"jjdlStr\":\"高芹路\",\"zt\":1,\"vid\":null,\"hphm\":\"苏BU139R\",\"hplx\":\"02\",\"drivers\":null,\"jsyxm\":null,\"jszh\":null,\"xszPic\":null,\"clPic\":null,\"jszPic\":null,\"sfzPic\":null},{\"jjId\":17,\"jjrq\":1481644800000,\"jjsc\":4,\"jjqx\":null,\"jjdl\":null,\"jjqxStr\":\"大兴\",\"jjdlStr\":\"104国道\",\"zt\":2,\"vid\":null,\"hphm\":\"苏BU139B\",\"hplx\":\"02\",\"drivers\":null,\"jsyxm\":null,\"jszh\":null,\"xszPic\":null,\"clPic\":null,\"jszPic\":null,\"sfzPic\":null},{\"jjId\":14,\"jjrq\":1481040000000,\"jjsc\":2,\"jjqx\":null,\"jjdl\":null,\"jjqxStr\":\"大兴\",\"jjdlStr\":\"106国道\",\"zt\":2,\"vid\":null,\"hphm\":\"苏BU139R\",\"hplx\":\"02\",\"drivers\":null,\"jsyxm\":null,\"jszh\":null,\"xszPic\":null,\"clPic\":null,\"jszPic\":null,\"sfzPic\":null}]}";
+				var arg = JSON.parse(result);
+				$scope.lists = arg.list;
+        $scope.page = arg.page;
+				/*$http({
+          method: "POST", 
+          url: "/Passport/manage/query?page="+$scope.pageNum,
+          data: $scope.condition
+        }).
+        success(function(data, status) {
+        	var arg = JSON.parse(data);
+           	$scope.lists = arg.list;
+           	$scope.page = arg.page;
+        }).
+        error(function(data, status) {
+          //$scope.data = data || "Request failed";
+          //$scope.status = status;
+      	});*/
+			}
+			$scope.prePage = function(){
+				$scope.pageNum = $scope.page.prePage;
+				$scope.query();
+			}
+			$scope.nextPage = function(){
+				$scope.pageNum = $scope.page.nextPage;
+				$scope.query();
+			}
+			
+			$scope.examine = function(obj,zt){
+				obj.zt = zt;
+				/*$http({
+            method: "POST", 
+            url: "/Passport/manage/updatePassportZt",
+            data: {jjId:obj.jjId,zt:zt}
+        }).
+        success(function(data, status) {
+        	obj.zt = zt;
+        }).
+        error(function(data, status) {
+      	});*/
+			}
+			
+			$scope.queryDetail = function(jjid){
+				var index = layer.open({
+					type: 2,
+					title: "进京证详情",
+					content: "passportDeatil.html?jjId="+jjid
+				});
+				layer.full(index);
+			}
+			
+			$scope.addJjz = function(){
+				var index = layer.open({
+					type: 2,
+					title: "添加进京证",
+					content: "../../jjtxz/apply.html"
+				});
+				layer.full(index);
+			}
+			$scope.addJjz2 = function(){
+				var index = layer.open({
+					type: 2,
+					title: "添加进京证",
+					content: "addPassport.html"
+				});
+				layer.full(index);
+			}
+
+			$scope.query();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* 你自己的样式 */
+
+.loginBody{    }
+
+.formControls {
+    margin-bottom: 15px;
+}
+.form-horizontal .form-label {
+    margin-bottom: 15px;
+}
+.form .row {
+    margin-top: 0px;
+}
