@@ -1,8 +1,12 @@
 var MyNg = {
 	createTable: function(args){
 		var tableTemplate = "";
+		var app;
 		if("title" in args){
 			args.title = "表格";
+		}
+		if("app" in args){
+			app = args.app;
 		}
 		tableTemplate += '<div class="cl pd-5 bg-1 bk-gray mt-20">' +
     		'<span class="l">'+args.title+'</span>';
@@ -47,7 +51,7 @@ var MyNg = {
 			'</div>';
 		}
 
-		var app = angular.module('myApp', []);
+		/*var app = angular.module('myApp', []);
 		app.filter('formatTime', function () {
 		    return function (value) {
 		    	if (!value) return '';
@@ -61,7 +65,15 @@ var MyNg = {
 		    	if(value == 3) return "审核不通过";
 		    	if(value == 4) return "审核通过";
 		    };
-		}).directive('mytable', [ function(){
+		}).*/
+		app.filter('formatTime', function () {
+		    return function (value) {
+		    	if (!value) return '';
+		        return new Date(value).Format("yyyy-MM-dd");
+		    };
+		});
+		
+		app.directive('mytable', [ function(){
 		    return {
 		        // scope: false, // 默认值，共享父级作用域
 		        // controller: function($scope, $element, $attrs, $transclude) {},

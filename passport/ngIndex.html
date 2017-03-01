@@ -48,7 +48,19 @@
 	<script type="text/javascript" src="../static/h-ui.admin/js/H-ui.admin.js"></script> 
 	<script type="text/javascript" src="../static/my-ng.js"></script> 
 	<script type="text/javascript">
-		var app = MyNg.createTable({
+		var app = angular.module('myApp', []);
+		app.filter('formatZt', function () {
+		    return function (value) {
+		    	if (!value) return '';
+		    	if(value == 1) return "待审核";
+		    	if(value == 2) return "预审通过";
+		    	if(value == 3) return "审核不通过";
+		    	if(value == 4) return "审核通过";
+		    };
+		});
+		
+		app = MyNg.createTable({
+			app:app,
 			title:"进京证信息列表",
 			columns:[{text:"号牌号码",dataIndex:"hphm"},
 			         {text:"进京日期",dataIndex:"jjrq",format:"formatTime"},
